@@ -1,9 +1,8 @@
-# junit5-jupiter-starter-gradle-groovy
+# Hello! This is my Java study project
 
-The `junit5-jupiter-starter-gradle-groovy` project demonstrates how to run tests based on JUnit
-Jupiter using [Gradle's native JUnit Platform support], Gradle's Groovy DSL
-and code and tests written in Groovy.
+Here I'm trying to learn the basics of Java API testing
+with Rest Assured, JUnit 5, Lombok, and Graddle as my building system.
 
-[Gradle's native JUnit Platform support]: https://docs.gradle.org/current/userguide/java_testing.html#using_junit5
+Run `./gradlew test` to execute all tests that are located in ``src/test``
 
-Run `./gradlew test` to execute all tests.# study-java-api-tests
+
