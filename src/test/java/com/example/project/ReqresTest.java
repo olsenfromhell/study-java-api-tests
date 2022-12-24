@@ -27,7 +27,7 @@ public class ReqresTest {
         );
 
         List<UserData> users = given()
-                .when().get(Endpoints.UserPath)
+                .when().get(Endpoints.UserPage + "2")
                 .then().log().all()
                 .extract().body().jsonPath()
                 .getList("data", UserData.class);
@@ -105,7 +105,7 @@ public class ReqresTest {
                 Specification.responseSpecificationUniqueStatus(204)
         );
         given()
-                .when().delete(Endpoints.UserWithId2)
+                .when().delete(Endpoints.UserWithId + "2")
                 .then().log().all();
     }
 }
