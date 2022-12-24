@@ -1,12 +1,11 @@
 package com.example.project;
 
-import api.data.ColorsData;
-import api.data.UserData;
+import api.data.*;
 import api.helpers.Endpoints;
-import api.registration.Registration;
-import api.registration.RegistrationSuccess;
-import api.registration.RegistrationUnsuccessful;
+import api.registration.*;
 import api.specification.Specification;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,12 +13,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ReqresTest {
 
     @Test
-    @DisplayName("User avatar link contains the same id as the user")
+    @DisplayName("POJO: User avatar link contains the same id as the user")
     public void checkAvatarAndIdTest() {
         Specification.installSpecification(
                 Specification.requestSpecification(Endpoints.URL),
@@ -33,7 +34,38 @@ public class ReqresTest {
                 .getList("data", UserData.class);
 
         users.forEach(x -> assertTrue(x.getAvatar().contains(x.getId().toString())));
-        assertTrue(users.stream().allMatch(x -> x.getEmail().endsWith("reqres.in")));
+        assertTrue(users.stream().allMatch(x -> x.getEmail().endsWith("@reqres.in")));
+    }
+
+    @Test
+    @DisplayName("No POJO: User avatar link contains the same id as the user")
+    public void checkAvatarAndIdTestNoPojo() {
+        Specification.installSpecification(
+                Specification.requestSpecification(Endpoints.URL),
+                Specification.responseSpecificationOK200()
+        );
+
+        Response response = given()
+                .when()
+                .get(Endpoints.UserPage + "2")
+                .then().log().all()
+                .body("page", equalTo(2))
+                .body("data.id", notNullValue())
+                .body("data.email", notNullValue())
+                .body("data.first_name", notNullValue())
+                .body("data.last_name", notNullValue())
+                .body("data.avatar", notNullValue())
+                .extract().response();
+
+        JsonPath jsonPath = response.jsonPath();
+        List<String> emails = jsonPath.get("data.email");
+        List<Integer> ids = jsonPath.get("data.id");
+        List<String> avatars = jsonPath.get("data.avatar");
+
+        for (int i = 0; i < avatars.size(); i++) {
+            assertTrue(avatars.get(i).contains(ids.get(i).toString()));
+        }
+        assertTrue(emails.stream().allMatch(x -> x.endsWith("@reqres.in")));
     }
 
     @Test
