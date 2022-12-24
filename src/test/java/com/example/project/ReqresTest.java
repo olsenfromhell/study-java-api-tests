@@ -1,6 +1,12 @@
 package com.example.project;
 
-import api.*;
+import api.data.ColorsData;
+import api.data.UserData;
+import api.helpers.Endpoints;
+import api.registration.Registration;
+import api.registration.RegistrationSuccess;
+import api.registration.RegistrationUnsuccessful;
+import api.specification.Specification;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

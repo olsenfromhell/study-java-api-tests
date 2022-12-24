@@ -1,4 +1,4 @@
-package api;
+package api.helpers;
 
 public class Endpoints {
     public static final String URL = "https://reqres.in";
