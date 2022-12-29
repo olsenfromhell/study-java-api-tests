@@ -28,7 +28,7 @@ public class ReqresTest {
         );
 
         List<UserData> users = given()
-                .when().get(Endpoints.UserPage + "2")
+                .when().get(Endpoints.UserPage, 2)
                 .then().log().all()
                 .extract().body().jsonPath()
                 .getList("data", UserData.class);
@@ -47,7 +47,7 @@ public class ReqresTest {
 
         Response response = given()
                 .when()
-                .get(Endpoints.UserPage + "2")
+                .get(Endpoints.UserPage, 2)
                 .then().log().all()
                 .body("page", equalTo(2))
                 .body("data.id", notNullValue())
@@ -58,6 +58,7 @@ public class ReqresTest {
                 .extract().response();
 
         JsonPath jsonPath = response.jsonPath();
+
         List<String> emails = jsonPath.get("data.email");
         List<Integer> ids = jsonPath.get("data.id");
         List<String> avatars = jsonPath.get("data.avatar");
@@ -137,7 +138,7 @@ public class ReqresTest {
                 Specification.responseSpecificationUniqueStatus(204)
         );
         given()
-                .when().delete(Endpoints.UserWithId + "2")
+                .when().delete(Endpoints.UserWithId, 2)
                 .then().log().all();
     }
 }
